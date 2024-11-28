@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrôle des Relais</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .relais-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .relais {
+      width: 150px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .relais button {
+      width: 80%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+    }
+    .on {
+      background-color: #4CAF50;
+    }
+    .off {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contrôle des Appareil</h1>
+  <div class="relais-container">
+    <div class="relais">
+      <p>Appareil 1</p>
+      <button id="relais1-btn" class="off" onclick="toggleRelais(1)">Éteint</button>
+    </div>
+    <div class="relais">
+      <p>Appareil 2</p>
+      <button id="relais2-btn" class="off" onclick="toggleRelais(2)">Éteint</button>
+    </div>
+    <div class="relais">
+      <p>Appareil 3</p>
+      <button id="relais3-btn" class="off" onclick="toggleRelais(3)">Éteint</button>
+    </div>
+    <div class="relais">
+      <p>Appareil 4</p>
+      <button id="relais4-btn" class="off" onclick="toggleRelais(4)">Éteint</button>
+    </div>
+  </div>
+
+  <script>
+    const token = "CDR"; // Jeton de sécurité (identique au code Arduino)
+
+    // Fonction pour basculer l'état d'un relais
+    function toggleRelais(relaisNumber) {
+      const btn = document.getElementById(relais${relaisNumber}-btn);
+      const currentState = btn.classList.contains("on");
+      const newState = currentState ? "off" : "on";
+
+      // URL du serveur ESP8266 (à modifier si nécessaire)
+      const espUrl = http://192.168.1.100:80 ;
+
+      // Envoyer une requête à l'ESP8266
+      fetch(espUrl)
+        .then(response => {
+          if (response.ok) {
+            // Mettre à jour l'état localement
+            btn.textContent = newState === "on" ? "Allumé" : "Éteint";
+            btn.className = newState === "on" ? "on" : "off";
+          } else {
+            alert(Erreur: Impossible de changer l'état du relais ${relaisNumber});
+          }
+        })
+        .catch(error => {
+          alert("Impossible de communiquer avec l'ESP8266. Vérifiez la connexion réseau.");
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+</html>
